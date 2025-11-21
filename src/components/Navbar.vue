@@ -42,6 +42,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { useTheme } from '../composables/useTheme'
 import axiosInstance from '@/services/header'
+import { onMounted } from 'vue'
 const props = defineProps({
   isSidebarOpen: {
     type: Boolean,
@@ -62,4 +63,10 @@ function onSignOut() {
   auth.clearAuth()
   router.push({ name: 'signin' })
 }
+
+onMounted( async ()  => {
+  if (auth.token) {
+    await auth.fetchUser()
+  }
+})
 </script>

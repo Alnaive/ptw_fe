@@ -1,154 +1,68 @@
 <template>
-  <div class="prose">
-    <h2 class="text-2xl font-semibold text-center mb-6">Create Account</h2>
-    <form @submit.prevent="onSubmit" class="space-y-4">
-      <div class="form-control">
-        <label class="label"><span class="label-text">Email</span></label>
-        <input v-model="form.email" type="email" required placeholder="you@example.com" class="input input-bordered w-full" />
-      </div>
+  <div class="vld-parent">
+    <!-- Loading overlay -->
+    <loading v-model:active="isLoading" :is-full-page="fullPage" :loader="loader" />
+  </div>
+  <div class="flex container mx-auto p-4">
+    <form  @submit.prevent="signup()" class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend">SignUp</legend>
+      
+      <label class="fieldset-label">Name</label>
+      <input v-model="formData.name" type="text" class="input" placeholder="name" />
+      <!-- Email/Username Input -->
+      <label class="fieldset-label">Username</label>
+      <input v-model="formData.username" type="text" class="input" placeholder="Username" />
 
-      <div class="form-control">
-        <label class="label"><span class="label-text">Password</span></label>
-        <input v-model="form.password" type="password" required minlength="6" placeholder="••••••••" class="input input-bordered w-full" />
-      </div>
+      <!-- Password Input -->
+      <label class="fieldset-label">Password</label>
+      <input v-model="formData.password" type="password" class="input" placeholder="Password" />
 
-      <div class="form-control">
-        <label class="label"><span class="label-text">Confirm Password</span></label>
-        <input v-model="form.confirm" type="password" required minlength="6" placeholder="••••••••" class="input input-bordered w-full" />
-      </div>
-
-      <div class="flex items-center justify-between">
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-        <router-link to="/signin" class="text-sm text-primary hover:underline">Already have an account?</router-link>
-      </div>
+      <!-- Login Button -->
+      <button type="submit" class="btn btn-neutral mt-4">Signup</button>
     </form>
-
-    <p v-if="error" class="text-sm text-error mt-4">{{ error }}</p>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import axiosInstance from '../services/header'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import auth from '../services/auth'
-import { useAuthStore } from '../stores/authStore'
+import { useAuthStore } from '@/stores/authStore' // Ensure this path is correct
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/css/index.css'
 
+// Router and Auth Store
 const router = useRouter()
-const store = useAuthStore()
-const form = reactive({ email: '', password: '', confirm: '' })
-const error = ref('')
+const authStore = useAuthStore()
 
-async function onSubmit() {
-  error.value = ''
-  if (form.password !== form.confirm) {
-    error.value = 'Passwords do not match'
-    return
+// Loading State
+const isLoading = ref(false)
+const loader = 'dots'
+const fullPage = ref(false)
+
+// Form Data
+const formData = ref({
+  name: null,
+  username: null,
+  password: null,
+})
+
+// Error Message
+const errorLogin = ref('')
+
+// Login Function
+async function signup() {
+  const payload = {
+    name: formData.value.name,
+    username: formData.value.username,
+    password: formData.value.password,
   }
-  try {
-    const user = await auth.signUp({ email: form.email, password: form.password })
-    store.setUser(user)
-    router.push('/')
-  } catch (err) {
-    error.value = 'Failed to create account.'
-  }
-}
-</script>
-<template>
-  <div class="prose">
-    <h2 class="text-2xl font-semibold text-center mb-6">Create Account</h2>
-    <form @submit.prevent="onSubmit" class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          v-model="form.email"
-          type="email"
-          required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          v-model="form.password"
-          type="password"
-          required
-          minlength="6"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-        <input
-          v-model="form.confirm"
-          type="password"
-          required
-          minlength="6"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        />
-      </div>
-
-      <div class="flex items-center justify-between">
-        <button
-            <div class="form-control">
-              <label class="label"><span class="label-text">Confirm Password</span></label>
-              <input
-                v-model="form.confirm"
-                type="password"
-                required
-                minlength="6"
-                placeholder="••••••••"
-                class="input input-bordered w-full"
-              />
-            </div>
-
-    <p v-if="error" class="text-sm text-red-600 mt-4">{{ error }}</p>
-  </div>
-</template>
-
-<script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import auth from '../services/auth'
-import { useAuthStore } from '../stores/auth'
-
-const router = useRouter()
-const store = useAuthStore()
-const form = reactive({ email: '', password: '', confirm: '' })
-const error = ref('')
-          <h2 class="text-2xl font-semibold text-center mb-6">Create Account</h2>
-          <form @submit.prevent="onSubmit" class="space-y-4">
-            <div class="form-control">
-              <label class="label"><span class="label-text">Email</span></label>
-              <input v-model="form.email" type="email" required placeholder="you@example.com" class="input input-bordered w-full" />
-            </div>
-
-            <div class="form-control">
-              <label class="label"><span class="label-text">Password</span></label>
-              <input v-model="form.password" type="password" required minlength="6" placeholder="••••••••" class="input input-bordered w-full" />
-            </div>
-
-            <div class="flex items-center justify-between">
-              <button type="submit" class="btn btn-primary">Sign Up</button>
-              <router-link to="/signin" class="text-sm text-primary hover:underline">Already have an account?</router-link>
-            </div>
-          </form>
-
-          <p v-if="error" class="text-sm text-error mt-4">{{ error }}</p>
-
-async function onSubmit() {
-  error.value = ''
-  if (form.password !== form.confirm) {
-    error.value = 'Passwords do not match'
-    return
-  }
-  try {
-    const user = await auth.signUp({ email: form.email, password: form.password })
-    store.setUser(user)
-    router.push('/')
-  } catch (err) {
-    error.value = 'Failed to create account.'
-  }
+  
+  await axiosInstance.post('/auth/signup', payload).then(function (res) {
+    if (res) {
+      console.log()
+      router.push({ name: 'signin' })
+    }
+  })
 }
 </script>

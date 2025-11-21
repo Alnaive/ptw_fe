@@ -17,7 +17,7 @@
 
       <!-- Login Button -->
       <button @click.prevent="login" class="btn btn-neutral mt-4">Login</button>
-
+      <router-link to="signup" class="btn btn-accent">SignUp</router-link>
       <!-- Error Message -->
       <div v-if="errorLogin" class="text-red-500 mt-2">
         {{ errorLogin }}
@@ -29,7 +29,7 @@
 <script setup>
 import axiosInstance from '../services/header'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore' // Ensure this path is correct
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/css/index.css'
