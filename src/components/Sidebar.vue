@@ -32,9 +32,9 @@
       <RouterLink to="/about" class="border-b border-gray-700 py-2">Permit Form</RouterLink>
       <RouterLink to="/" class="border-b border-gray-700 py-2">JSA Form</RouterLink>
       <RouterLink to="/" class="border-b border-gray-700 py-2">Permit Type</RouterLink>
-      <RouterLink to="/" class="border-b border-gray-700 py-2">Users</RouterLink>
-      <RouterLink to="/" class="border-b border-gray-700 py-2">Role</RouterLink>
-      <RouterLink to="/" class="border-b border-gray-700 py-2">Department</RouterLink>
+      <RouterLink to="/users" class="border-b border-gray-700 py-2">Users</RouterLink>
+      <RouterLink to="/roles" class="border-b border-gray-700 py-2">Role</RouterLink>
+      <RouterLink to="/departments" class="border-b border-gray-700 py-2">Department</RouterLink>
     </div>
     <div class="flex absolute bottom-7 ml-3 p-2">
       <a

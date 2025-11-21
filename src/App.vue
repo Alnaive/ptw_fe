@@ -23,7 +23,7 @@
         </template>
       </div>
       <div>
-        <Footer v-if="!isAuth" class="z-index-0" />
+        <!-- <Footer v-if="!isAuth" class="z-index-0" /> -->
       </div>
     </div>
   </div>
